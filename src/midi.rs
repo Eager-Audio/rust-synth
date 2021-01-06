@@ -98,9 +98,9 @@ pub struct MidiConnection {
     midi_in: Option<MidiInput>,
 }
 
-fn port_prompt(ports: &Vec<MidiInputPort>, re_ask: Option<()>) -> usize {
+fn port_prompt(ports: &Vec<MidiInputPort>, show_initial_prompt: bool) -> usize {
     let mut choice: usize = 0;
-    if let None = re_ask {
+    if(show_initial_prompt) {
         println!("Choose your midi input.");
     }
     match read_input().expect("Couldn't read input.").parse::<usize>() {
@@ -110,12 +110,12 @@ fn port_prompt(ports: &Vec<MidiInputPort>, re_ask: Option<()>) -> usize {
                 choice = c;
             } else {
                 println!("{}: Not a valid port number", c);
-                port_prompt(ports, Some(()));
+                port_prompt(ports, false);
             }
         }
         Err(_) => {
             println!("{}: Not a valid port number", c);
-            port_prompt(ports, Some(()));
+            port_prompt(ports, false);
         }
     };
     choice
@@ -127,7 +127,7 @@ impl MidiConnection {
         midi_in.ignore(Ignore::None);
 
         let ports = get_ports(&midi_in, true)?;
-        let port = port_prompt(&ports, None);
+        let port = port_prompt(&ports, true);
 
         let port = ports.get(port).ok_or("port not found")?.clone();
         let port_name = midi_in.port_name(&port)?;
