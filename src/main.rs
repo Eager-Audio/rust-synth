@@ -119,6 +119,10 @@ fn run() -> Result<(), Box<dyn Error>> {
                     if listen_to_keyboard {
                         let note = input.scancode;
                         match input.state {
+                            // Ideally we should call out to the midi input, not just mimic the functionality
+                            // We can create a virtual device with midir - MidiInput::create_virtual()
+                            // and then connect to it with a MidiOutput
+                            // note: we should question the system compatibility of creating a virtual device
                             ElementState::Pressed => {
                                 access_atomic!(synth_clone);
                                 synth_clone.frequency(note as f32 * 100.0);
