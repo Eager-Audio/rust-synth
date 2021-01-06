@@ -1,10 +1,10 @@
-pub const NOTE_OFF: u8 = 0b1000;
-pub const NOTE_ON: u8 = 0b1001;
-pub const _POLYPHONIC_AFTER_TOUCH: u8 = 0b1010;
-pub const CONTROL_CHANGE: u8 = 0b1011;
-pub const PROGRAM_CHANGE: u8 = 0b1100;
-pub const _AFTER_TOUCH: u8 = 0b1101;
-pub const PITCH_BEND_CHANGE: u8 = 0b1110;
+const NOTE_OFF: u8 = 0b1000;
+const NOTE_ON: u8 = 0b1001;
+const _POLYPHONIC_AFTER_TOUCH: u8 = 0b1010;
+const CONTROL_CHANGE: u8 = 0b1011;
+const PROGRAM_CHANGE: u8 = 0b1100;
+const _AFTER_TOUCH: u8 = 0b1101;
+const PITCH_BEND_CHANGE: u8 = 0b1110;
 
 #[derive(Debug)]
 pub struct Note(u8, u8, u8);
