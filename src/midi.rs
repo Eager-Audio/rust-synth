@@ -57,6 +57,10 @@ impl MidiConnection {
         midi_in.ignore(Ignore::None);
 
         let ports = get_ports(&midi_in, true)?;
+        if ports.is_empty() {
+            return Err("No available MIDI ports! - How do you expect to control this synth? :)".into());
+        }
+        
         let port = port_prompt(&ports, true);
 
         let port = ports.get(port).ok_or("port not found")?.clone();
