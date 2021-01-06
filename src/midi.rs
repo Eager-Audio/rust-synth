@@ -1,3 +1,5 @@
+mod messages;
+use messages::*;
 use crate::io_utils::read_input;
 #[derive(Debug)]
 pub struct Note(u8, u8, u8);
@@ -29,14 +31,6 @@ pub enum MidiMessage {
     ControlChange(ControlChange),
     PitchBend(u8, u16),
 }
-
-const NOTE_OFF: u8 = 0b1000;
-const NOTE_ON: u8 = 0b1001;
-const _POLYPHONIC_AFTER_TOUCH: u8 = 0b1010;
-const CONTROL_CHANGE: u8 = 0b1011;
-const PROGRAM_CHANGE: u8 = 0b1100;
-const _AFTER_TOUCH: u8 = 0b1101;
-const PITCH_BEND_CHANGE: u8 = 0b1110;
 
 fn split_status_and_channel(status_byte: u8) -> (u8, u8) {
     let channel = status_byte & 0b00001111;
@@ -98,12 +92,13 @@ pub struct MidiConnection {
     midi_in: Option<MidiInput>,
 }
 
-fn port_prompt(ports: &Vec<MidiInputPort>, show_initial_prompt: bool) -> usize {
+fn port_prompt(ports: &[MidiInputPort], show_initial_prompt: bool) -> usize {
     let mut choice: usize = 0;
-    if(show_initial_prompt) {
+    if show_initial_prompt {
         println!("Choose your midi input.");
     }
-    match read_input().expect("Couldn't read input.").parse::<usize>() {
+    let input = read_input().expect("Couldn't read input.");
+    match input.parse::<usize>() {
         Ok(c) => {
             if c < ports.len() {
  
@@ -114,7 +109,7 @@ fn port_prompt(ports: &Vec<MidiInputPort>, show_initial_prompt: bool) -> usize {
             }
         }
         Err(_) => {
-            println!("{}: Not a valid port number", c);
+            println!("{}: Not a valid port number", input);
             port_prompt(ports, false);
         }
     };
