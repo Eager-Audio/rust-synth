@@ -11,7 +11,7 @@ fn get_ports(
     midi_in: &MidiInput,
     print: bool,
 ) -> Result<std::vec::Vec<midir::MidiInputPort>, Box<dyn Error>> {
-    if print {
+    if print && !midi_in.ports().is_empty() {
         println!("Available input ports:");
         for (i, p) in midi_in.ports().iter().enumerate() {
             println!("{}: {}", i, midi_in.port_name(p)?);
