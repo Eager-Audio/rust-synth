@@ -117,7 +117,7 @@ fn run() -> Result<(), Box<dyn Error>> {
                 WindowEvent::CloseRequested => *control_flow = ControlFlow::Exit,
                 WindowEvent::KeyboardInput{ input, .. } => {
                     if listen_to_keyboard {
-                        let note = input.scancode;
+                        let note = input.scancode; // this is the positional code of the key (the only thing we're interested in)
                         match input.state {
                             // Ideally we should call out to the midi input, not just mimic the functionality
                             // We can create a virtual device with midir - MidiInput::create_virtual()
